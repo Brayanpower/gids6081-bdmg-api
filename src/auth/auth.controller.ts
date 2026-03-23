@@ -2,11 +2,12 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards, Request }
 import { AuthService } from './auth.service';
 import { LoginDto } from './dbo/login.dbo';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { Public } from './decorators/public.decorator';
 
 @Controller('api/auth')
 export class AuthController {
   constructor(private readonly authSvc: AuthService) {}
-
+@Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: LoginDto) {
