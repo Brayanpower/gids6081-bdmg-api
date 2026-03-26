@@ -26,27 +26,30 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException('Contraseña incorrecta.');
     }
+     const payload1 = { sub: user.id, username: user.username};
 
+    const [refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload1, { expiresIn: '7d' }),
+    ]);
     // 3. Generar Payload
-    const payload = { sub: user.id, username: user.username };
+    const payload = { sub: user.id, username: user.username, refreshToken: refreshToken };
 
     // 4. Generar tokens (AccessToken: 60s, RefreshToken: 7d)
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(payload, { expiresIn: '60s' }),
-      this.jwtService.signAsync(payload, { expiresIn: '7d' }),
+    const [accessToken] = await Promise.all([
+      this.jwtService.signAsync(payload, { expiresIn: '60s' })
     ]);
 
     // 5. Guardar Refresh Token en la base de datos
     await this.usersService.updateRefreshToken(user.id, refreshToken);
 
     return {
-      message: 'Login exitoso',
+      // message: 'Login exitoso',
       accessToken,
       refreshToken,
-      user: {
-        id: user.id,
-        username: user.username
-      }
+      // user: {
+      //   id: user.id,
+      //   username: user.username
+      // }
     };
   }
 
