@@ -46,19 +46,19 @@ export class UsersService {
       },
     });
   }
-  
-async findOneByUsername(username: string) {
-  return await this.prisma.user.findUnique({
-    where: { username },
-  });
-}
 
-async updateRefreshToken(userId: number, refreshToken: string | null) {
-  return await this.prisma.user.update({
-    where: { id: userId },
-    data: { refreshToken },
-  });
-}
+  async findOneByUsername(username: string) {
+    return await this.prisma.user.findUnique({
+      where: { username },
+    });
+  }
+
+  async updateRefreshToken(userId: number, refreshToken: string | null) {
+    return await this.prisma.user.update({
+      where: { id: userId },
+      data: { refreshToken },
+    });
+  }
 
 
   async updateUser(params: {
@@ -82,5 +82,15 @@ async updateRefreshToken(userId: number, refreshToken: string | null) {
     return this.prisma.user.findUnique({ where: { username } });
   }
 
-
+  async updateActiveToken(userId: number, token: string | null) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { activeToken: token },
+    });
+  }
+  async findOneById(id: number) {
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
 }

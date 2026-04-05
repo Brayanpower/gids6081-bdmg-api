@@ -22,7 +22,7 @@ model User {
   refreshToken String?  @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+ activeToken  String?  @db.Text
   tasks     Task[]   // relación inversa: un usuario puede tener varias tareas
 }
 
