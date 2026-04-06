@@ -23,7 +23,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
  activeToken  String?  @db.Text
-  tasks     Task[]   // relación inversa: un usuario puede tener varias tareas
+  tasks     Task[]
+  logs      log[]  
+   // relación inversa: un usuario puede tener varias tareas
 }
 
 model Task {
@@ -35,4 +37,16 @@ model Task {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   user        User     @relation(fields: [userId], references: [id])
+}
+
+model log {
+  id        Int      @id @default(autoincrement())
+  statusCode Int   @db.Int
+  path      String   @db.VarChar(255)
+  error String   @db.Text
+  timestamp DateTime @default(now())
+  errorCode String   @db.VarChar(255)
+  sessionId Int?  
+
+   user User? @relation(fields: [sessionId], references: [id])
 }

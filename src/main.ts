@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common'; // Simplificado el import
 import * as dotenv from 'dotenv';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // Simplificado el import
+import { AllExeptionsFilter } from './common/filtrers/http-exeptions.filter';
 dotenv.config();
 
 async function bootstrap() {
@@ -15,7 +16,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
   }));
-    
+
+  app.useGlobalFilters(new AllExeptionsFilter());
+  
   const config = new DocumentBuilder()
     .setTitle('API Con vulnerabilidades de seguridad') // Corregido typo
     .setDescription('Documento de API')
